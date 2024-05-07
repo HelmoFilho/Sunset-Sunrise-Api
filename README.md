@@ -1,5 +1,5 @@
 
-![Sun](src/app/static/images/sun_today.png)
+![Sun](src/app/static/images/sun-today.png)
 
 # API Sunset-Sunrise
 
