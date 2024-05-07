@@ -1,5 +1,9 @@
 
+![Sun](src/app/static/images/sun_today.png)
+
 # API Sunset-Sunrise
+
+![GitHub last commit](https://img.shields.io/github/last-commit/HelmoFilho/Image-Server-OpenCV)
 
 ## Descrição
 
