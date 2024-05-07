@@ -1,5 +1,5 @@
 ## -- Importing External Modules -- ##
-from fastapi import APIRouter, HTTPException
+from fastapi import APIRouter, HTTPException, Depends
 from fastapi.responses import JSONResponse
 from datetime import datetime, timedelta
 import httpx, pytz
@@ -10,8 +10,8 @@ from src.interfaces.default_response import (
     PydanticError,
 )
 from src.interfaces.sunset_sunrise import (
-    SunsetSunrisePost,
-    SunsetSunrisePostResponse,
+    SunsetSunriseGet,
+    SunsetSunriseGetResponse,
 )
 import config as cnfg
 
@@ -22,18 +22,18 @@ router = APIRouter(
     tags = tag,
 )
 
-responses_post = {
-    200: {"model": SunsetSunrisePostResponse},
+responses_get = {
+    200: {"model": SunsetSunriseGetResponse},
     400: {"model": GenericError},
     422: {"model": PydanticError},
 }
 
-@router.post(
+@router.get(
         "", 
-        responses = responses_post, 
+        responses = responses_get, 
     )
-async def sunset_sunrise_post(
-        request: SunsetSunrisePost,
+async def sunset_sunrise_get(
+        query_params: SunsetSunriseGet = Depends(),
     ):
     """
     The microservice dynamically respond to the request with the following data:
@@ -49,8 +49,8 @@ async def sunset_sunrise_post(
     response = await client.post(
         "https://api.sunrise-sunset.org/json",
         params = {
-            "lat": request.latitude,
-            "lng": request.longitude,
+            "lat": query_params.latitude,
+            "lng": query_params.longitude,
             "formatted": 0,
             "tzid": cnfg.TIMEZONE,
             "date": "today",
@@ -73,17 +73,34 @@ async def sunset_sunrise_post(
     # Converting and calculating answers
     conversion_format: str = "%d-%m-%Y %H:%M:%S"
 
-    check_datetime_string: str = results[request.type.lower()]
+    check_datetime_string: str = results[query_params.type.lower()]
     check_datetime: datetime = datetime.strptime(check_datetime_string.replace("T", " "), "%Y-%m-%d %H:%M:%S%z")
 
     if request_datetime > check_datetime:
-        check_datetime += timedelta(days = 1)
+
+        response = await client.post(
+            "https://api.sunrise-sunset.org/json",
+            params = {
+                "lat": query_params.latitude,
+                "lng": query_params.longitude,
+                "formatted": 0,
+                "tzid": cnfg.TIMEZONE,
+                "date": "tomorrow",
+            },
+            timeout = 60,
+        )
+
+        json_response: dict = response.json()
+        results: dict = json_response.get("results")
+
+        check_datetime_string: str = results[query_params.type.lower()]
+        check_datetime: datetime = datetime.strptime(check_datetime_string.replace("T", " "), "%Y-%m-%d %H:%M:%S%z")
         
     difference_datetime = check_datetime - request_datetime
     
     response_data: dict = {
         "remaing_time": str(difference_datetime)[:8],
-        "exact_datetime": check_datetime.strftime(conversion_format),
+        "event_datetime": check_datetime.strftime(conversion_format),
         "request_datetime": request_datetime.strftime(conversion_format),
     }
 

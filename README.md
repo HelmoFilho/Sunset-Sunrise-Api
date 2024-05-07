@@ -12,7 +12,7 @@ A resposta tem o seguinte schema:
     "description": "Request occurred successfully",
     "data": {
         "remaing_time": "23:24:41",
-        "exact_datetime": "27-02-2024 18:38:55",
+        "event_datetime": "27-02-2024 18:38:55",
         "request_datetime": "26-02-2024 19:08:13"
     }
 }

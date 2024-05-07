@@ -26,13 +26,13 @@ description = """
 
 # Introduction
 
-Api Created for Voxus Admission Challenge
+Api Created for testing the sunrise-sunset api with fastapi
 
 
 ## Description
 
 This microservice is responsible for providing information about the time remaining until the next sunrise or sunset
-for the America/Sao_Paulo Timezone.
+for the America/Fortaleza Timezone.
 To accomplish this task, this api consults a public sunset/sunrise API, the documentation for which is 
 provided at the following URL: https://sunrise-sunset.org/api
 
@@ -93,14 +93,14 @@ def custom_openapi():
         return app.openapi_schema
     
     openapi_schema = get_openapi(
-        title = "API VOXUS CHALLENGE",
+        title = "API SUNSET-SUNRISE",
         version = "1.0.0",
         description = description,
         routes = app.routes,
     )
     openapi_schema["info"]["x-logo"] = {
-        "url": "static/images/logo.png",
-        "altText": 'Voxus logo',
+        "url": "static/images/logo.jpg",
+        "altText": 'Sunset Sunrise',
     }
 
     app.openapi_schema = openapi_schema
