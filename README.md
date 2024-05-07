@@ -3,7 +3,7 @@
 
 # API Sunset-Sunrise
 
-![GitHub last commit](https://img.shields.io/github/last-commit/HelmoFilho/Image-Server-OpenCV)
+![GitHub last commit](https://img.shields.io/github/last-commit/HelmoFilho/Sunset-Sunrise-Api)
 
 ## Descrição
 
