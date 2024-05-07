@@ -1,0 +1,21 @@
+[tool.poetry]
+name = "src"
+version = "1.0.0"
+description = ""
+authors = ["Helmo Filho <helmofilho09@gmaail.com>"]
+readme = "README.md"
+
+[tool.poetry.dependencies]
+python = "^3.11"
+fastapi = {extras = ["standard"], version = "^0.110.0"}
+uvicorn = "^0.27.1"
+gunicorn = "^21.2.0"
+httpx = "^0.27.0"
+python-dotenv = "^1.0.1"
+pytz = "^2024.1"
+pytest = "^8.0.2"
+
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"

@@ -1,0 +1,12 @@
+# Pycache files
+__pycache__/
+__pycache__
+
+# VSCode
+.vscode
+.vscode/
+
+# Folders
+.venv
+poetry.lock
+pyproject.toml
